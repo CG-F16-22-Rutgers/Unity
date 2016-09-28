@@ -6,6 +6,7 @@ public class mainCameraControls : MonoBehaviour
 {
 
     public float speed = 50.0f; //max speed of camera
+	public float mouseWheelFactor = 10f;
 
     // Use this for initialization
     void Start()
@@ -21,7 +22,7 @@ public class mainCameraControls : MonoBehaviour
         Vector3 dir = new Vector3(); //create (0,0,0)
 
 		dir.x = Input.GetAxis("Horizontal");
-		dir.y = Input.GetAxis("Mouse ScrollWheel");
+		dir.y = Input.GetAxis("Mouse ScrollWheel") * mouseWheelFactor;
 		dir.z = Input.GetAxis("Vertical");
 
 		Vector3 movement = Quaternion.Euler(0, Camera.main.transform.localEulerAngles.y, 0) * dir;
