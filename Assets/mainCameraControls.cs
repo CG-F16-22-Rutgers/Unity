@@ -21,9 +21,21 @@ public class mainCameraControls : MonoBehaviour
     {
         Vector3 dir = new Vector3(); //create (0,0,0)
 
-		dir.x = Input.GetAxis("Horizontal");
+		if (Input.GetKey(KeyCode.W)) {
+			dir.z = 1;
+		}
+		if (Input.GetKey(KeyCode.S)) {
+			dir.z = -1;
+		}
+
 		dir.y = Input.GetAxis("Mouse ScrollWheel") * mouseWheelFactor;
-		dir.z = Input.GetAxis("Vertical");
+
+		if (Input.GetKey(KeyCode.A)) {
+			dir.x = -1;
+		}
+		if (Input.GetKey(KeyCode.D)) {
+			dir.x = 1;
+		}
 
 		Vector3 movement = Quaternion.Euler(0, Camera.main.transform.localEulerAngles.y, 0) * dir;
 
