@@ -18,27 +18,14 @@ public class mainCameraControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Movement of Camera
         Vector3 dir = new Vector3(); //create (0,0,0)
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
-        {
-            dir.z = dir.z + 1.0f;
-        }
-        if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-        {
-            dir.z = dir.z - 1.0f;
-        }
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-        {
-            dir.x = dir.x - 1.0f;
-        }
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-        {
-            dir.x = dir.z + 1.0f;
-        }
 
-        dir.Normalize();
+		dir.x = Input.GetAxis("Horizontal");
+		dir.y = Input.GetAxis("Mouse ScrollWheel");
+		dir.z = Input.GetAxis("Vertical");
 
-        transform.Translate(dir * speed * Time.deltaTime);
+		Vector3 movement = Quaternion.Euler(0, Camera.main.transform.localEulerAngles.y, 0) * dir;
+
+        transform.Translate(movement * speed * Time.deltaTime, Space.World);
     }
 }
