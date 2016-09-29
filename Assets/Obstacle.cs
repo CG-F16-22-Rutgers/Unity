@@ -3,6 +3,11 @@ using System.Collections;
 
 public class Obstacle : MonoBehaviour {
     public bool isActive = false;
+    public Rigidbody rb;
+
+	void Start() {
+		rb = GetComponent<Rigidbody>();
+	}
 
     void Update() {
 		if (isActive) {
@@ -22,7 +27,7 @@ public class Obstacle : MonoBehaviour {
 
 			Vector3 movement = Quaternion.Euler(0, Camera.main.transform.localEulerAngles.y, 0) * dir;
 			
-			transform.Translate(movement * Time.deltaTime * 10, Space.World);
+			rb.AddForce(movement * 10);
 		}
     }
 

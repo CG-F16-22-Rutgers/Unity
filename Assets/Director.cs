@@ -47,25 +47,26 @@ public class Director : MonoBehaviour
 				if (temp.tag == "Obstacle") {
 					Obstacle obs = temp.GetComponent<Obstacle>();
 					obs.isActive = !obs.isActive;
-				}
-                if (temp.GetComponent<NavMeshAgent>())
-                {
-                    AgentMovement setToActive = temp.GetComponent<AgentMovement>();
-                    setToActive.isActive = !setToActive.isActive;
-                    setToActive.destination = temp.position;
-                }
-                else
-                {
-                    destination = hitInfo.point;
-                    //put destination in active guys
-                    GameObject[] obj = GameObject.FindGameObjectsWithTag("active");
-                    foreach (GameObject i in obj)
-                    {
+				} else {
+					if (temp.GetComponent<NavMeshAgent>())
+					{
+						AgentMovement setToActive = temp.GetComponent<AgentMovement>();
+						setToActive.isActive = !setToActive.isActive;
+						setToActive.destination = temp.position;
+					}
+					else
+					{
+						destination = hitInfo.point;
+						//put destination in active guys
+						GameObject[] obj = GameObject.FindGameObjectsWithTag("active");
+						foreach (GameObject i in obj)
+						{
 
-                        i.GetComponent<AgentMovement>().destination = destination;
-                    }
-                }
-            }
+							i.GetComponent<AgentMovement>().destination = destination;
+						}
+					}
+				}
+			}
         }
     }
 }
