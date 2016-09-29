@@ -8,8 +8,6 @@ public class Director : MonoBehaviour
     Transform individualTemp;
     public Vector3 destination;
 
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(1))
@@ -46,10 +44,12 @@ public class Director : MonoBehaviour
             if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
             {
                 temp = hitInfo.transform;
+				if (temp.tag == "Obstacle") {
+					Obstacle obs = temp.GetComponent<Obstacle>();
+					obs.isActive = !obs.isActive;
+				}
                 if (temp.GetComponent<NavMeshAgent>())
                 {
-
-                    //Debug.Log("hit guy");
                     AgentMovement setToActive = temp.GetComponent<AgentMovement>();
                     setToActive.isActive = !setToActive.isActive;
                     setToActive.destination = temp.position;
@@ -64,7 +64,6 @@ public class Director : MonoBehaviour
 
                         i.GetComponent<AgentMovement>().destination = destination;
                     }
-                    //Debug.Log("hit what??");
                 }
             }
         }
