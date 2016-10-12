@@ -12,6 +12,11 @@ public class AgentMovement : MonoBehaviour
 
     public GameObject character;
 
+    void Start()
+    {
+        agent.stoppingDistance = 1f;
+    }
+
     // Update is called once per frames
     void Update()
     {
@@ -19,9 +24,9 @@ public class AgentMovement : MonoBehaviour
         if (isActive)
         {
             gameObject.tag = "active";
-            agent.stoppingDistance = 0;
+     
             agent.acceleration = 8;
-            maxdistanceToDest = 1.5f;
+            maxdistanceToDest = 2f;
             //change color :)
 
         }
@@ -37,6 +42,21 @@ public class AgentMovement : MonoBehaviour
 
         if (agent.hasPath && agent.remainingDistance >= maxdistanceToDest)
         {
+            RaycastHit hitInfo;
+            if (Physics.Raycast(transform.position, transform.forward, out hitInfo))
+            {
+
+                Transform rayTemp = hitInfo.transform;
+                if (rayTemp.tag == "active" || rayTemp.tag == "inactive")
+                {
+                    if (rayTemp.gameObject.GetComponent<NavMeshAgent>().remainingDistance <= rayTemp.gameObject.GetComponent<NavMeshAgent>().stoppingDistance)
+                    {
+                        //this means agent found his destination
+                        agent.destination = rayTemp.position;
+                        agent.stoppingDistance = 4f;
+                    }
+                }
+            }
             agent.Resume();
             isMoving = 1;
         }
