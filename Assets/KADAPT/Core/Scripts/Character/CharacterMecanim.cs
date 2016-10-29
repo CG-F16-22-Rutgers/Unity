@@ -326,4 +326,12 @@ public class CharacterMecanim : MonoBehaviour
         return RunStatus.Running;
     }
     #endregion
+
+    public virtual RunStatus conversation(Val<GameObject> guy1, Val<GameObject> guy2, Val<bool> isActive)
+    {
+        this.Body.converse(guy1.Value, guy2.Value, isActive.Value);
+        return RunStatus.Success;
+    }
+
+
 }

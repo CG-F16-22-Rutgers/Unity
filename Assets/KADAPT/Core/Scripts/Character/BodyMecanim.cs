@@ -698,4 +698,27 @@ public class BodyMecanim : MonoBehaviour
             this.InteractionStop(effectorType, interactionObject);
     }
     #endregion
+
+    public GameObject converseBubble;
+
+    public void converse(GameObject guy1, GameObject guy2, bool isActive)
+    {
+
+        if (isActive == true)
+            this.ResetAnimation();
+
+        GameObject converseBubble1 = (GameObject)Instantiate(converseBubble, new Vector3(0, 0, 0), Quaternion.identity);
+        converseBubble1.transform.parent = guy1.transform;
+        converseBubble1.transform.localPosition = new Vector3(0, 2.5f, 0);
+        converseBubble1.SetActive(true);
+
+        GameObject converseBubble2 = (GameObject)Instantiate(converseBubble, new Vector3(0, 0, 0), Quaternion.identity);
+        converseBubble2.transform.parent = guy2.transform;
+        converseBubble2.transform.localPosition = new Vector3(0, 2.5f, 0);
+        converseBubble2.SetActive(true);
+
+    }
+
+
+
 }

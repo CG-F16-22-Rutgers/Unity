@@ -222,6 +222,8 @@ public class BehaviorMecanim : MonoBehaviour
             () => this.Character.BodyAnimation(gestureName, false));
     }
 
+    
+
 
     #endregion
 
@@ -308,4 +310,12 @@ public class BehaviorMecanim : MonoBehaviour
                 new LeafInvoke(turn, stopTurning));
     }
     #endregion
+
+
+    public Node Node_Conversation(Val<GameObject> guy1, Val<GameObject> guy2, Val<bool> start)
+    {
+        return new LeafInvoke(
+            () => this.Character.conversation(guy1, guy2, start),
+            () => this.Character.conversation(guy1, guy2, false));
+    }
 }
