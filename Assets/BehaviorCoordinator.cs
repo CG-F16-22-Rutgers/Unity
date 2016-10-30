@@ -309,9 +309,17 @@ public class BehaviorCoordinator : MonoBehaviour
                                             (new DecoratorLoop(
                                             (ST_playFaceAnimation("SAD", true, knight)))),
                                             (new DecoratorLoop(
-                                            (this.ST_Approach(wander9, robber))))
-                                        )
-                                       )
+                                                (new TreeSharpPlus.RandomNode (
+                                                    (this.ST_Approach(wander1, robber)),
+                                                    (this.ST_Approach(wander1, robber)),
+                                                    (this.ST_Approach(wander1, robber)),
+                                                    (this.ST_Approach(wander1, robber)),
+                                                    (this.ST_Approach(wander1, robber)),
+                                                    (this.ST_Approach(wander1, robber)),
+                                                    (this.ST_Approach(wander1, robber))
+                                                ))
+                                            ))
+                                       ))
                                    
                                    //(ST_playFaceAnimation("SAD", true, knight))
                                 ))
