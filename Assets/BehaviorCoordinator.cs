@@ -34,6 +34,8 @@ public class BehaviorCoordinator : MonoBehaviour
         conversationNumber = (object)(0);
         conversationPart2 = (object)(-2);
         conversationNumber2 = (object)(1);
+        conversationPart3 = (object)(-2);
+        conversationNumber3 = (object)(2);
 
     }
 
@@ -43,9 +45,11 @@ public class BehaviorCoordinator : MonoBehaviour
     public object conversationNumber;
     public object conversationPart2;
     public object conversationNumber2;
+    public object conversationPart3;
+    public object conversationNumber3;
     public object isActive1;
     public object isActive2;
-
+    bool yesWasPressed;
 
     // Update is called once per frame
     void Update()
@@ -55,7 +59,22 @@ public class BehaviorCoordinator : MonoBehaviour
             conversationPart = (object)(((int)conversationPart) + 1);
             Debug.Log("conversatonPart: " + (int)conversationPart);
             conversationPart2 = (object)(((int)conversationPart2) + 1);
+            conversationPart3 = (object)(((int)conversationPart3) + 1);
         }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            yesWasPressed = true;
+            conversationPart3 = (object)(((int)conversationPart3) + 1);
+        }else if (Input.GetKeyDown(KeyCode.N))
+        {
+            yesWasPressed = false;
+            conversationPart3 = (object)(((int)conversationPart3) + 2);
+        }
+    }
+
+    public bool wasYesPressed()
+    {
+        return yesWasPressed;
     }
 
     protected Node ST_beginConversation(GameObject guy1, GameObject guy2)
@@ -82,6 +101,13 @@ public class BehaviorCoordinator : MonoBehaviour
     {
         Val<object> convP = Val.V(() => (object)conversationPart2);
         Val<object> convN = Val.V(() => (object)conversationNumber2);
+        Val<Text> convText = Val.V(() => conversationText);
+        return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_ConversationInProcess(true, convP, convN, convText), new LeafWait(10));
+    }
+    protected Node ST_processConversation3(object convNum, object convPart)
+    {
+        Val<object> convP = Val.V(() => (object)conversationPart3);
+        Val<object> convN = Val.V(() => (object)conversationNumber3);
         Val<Text> convText = Val.V(() => conversationText);
         return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_ConversationInProcess(true, convP, convN, convText), new LeafWait(10));
     }
@@ -206,15 +232,15 @@ public class BehaviorCoordinator : MonoBehaviour
                                     (this.ST_IdleKing("THINK", 90000)),//10000//random...
                                     //walk through all the rooms
                                     (new SequenceShuffle(
+                                        (this.ST_ApproachAndWait(wander1)),
                                         (this.ST_ApproachAndWait(wander2)),
-                                        (this.ST_ApproachAndWait(wander2)),
-                                        (this.ST_ApproachAndWait(wander2)),
-                                        (this.ST_ApproachAndWait(wander2)),
-                                        (this.ST_ApproachAndWait(wander2)),
-                                        (this.ST_ApproachAndWait(wander2)),
-                                        (this.ST_ApproachAndWait(wander2)),
-                                        (this.ST_ApproachAndWait(wander2)),
-                                        (this.ST_ApproachAndWait(wander2))
+                                        (this.ST_ApproachAndWait(wander3)),
+                                        (this.ST_ApproachAndWait(wander4)),
+                                        (this.ST_ApproachAndWait(wander5)),
+                                        (this.ST_ApproachAndWait(wander6)),
+                                        (this.ST_ApproachAndWait(wander7)),
+                                        (this.ST_ApproachAndWait(wander8)),
+                                        (this.ST_ApproachAndWait(wander9))
                                     ))      
                                 ))
                             )
@@ -231,7 +257,7 @@ public class BehaviorCoordinator : MonoBehaviour
                                     //if see robber, we go on and take him to the king
                                     (this.ST_Sees2(knight, robber)),
                                     (this.ST_playFaceAnimation("ROAR",true, robber)),
-                                    (this.ST_playFaceAnimation("ACKNOWLEDGE", true, knight)),
+                                    //(this.ST_playFaceAnimation("ACKNOWLEDGE", true, knight)),
                                     //move the knight to the king
                                     //move the robber to the knight
                                     (new DecoratorInvert
@@ -257,12 +283,40 @@ public class BehaviorCoordinator : MonoBehaviour
                                         (new DecoratorLoop
                                             (new Sequence(
                                                 new DecoratorInvert(
-                                                    (this.ST_processConversation2(conversationNumber2, conversationPart2))
+                                                    (this.ST_processConversation3(conversationNumber3, conversationPart3))
                                                 )
                                             ))
                                         )
                                     ),
-                                this.ST_endConversation()
+                                this.ST_endConversation(),
+                                (this.ST_playFaceAnimation("ROAR", false, robber)),
+                                (new Sequence(
+                                    (new DecoratorInvert
+                                        (new Sequence (
+                                            (new LeafAssert(wasYesPressed)),
+                                            //execute
+                                            //DO EXECUTION----------------------------------------------------------------------------------
+                                            (new TreeSharpPlus.RandomNode(this.ST_beginConversation(knight, robber), this.ST_beginConversation(king, robber))),
+                                            //-----------------------------------------------------------------------------------------------
+                                            //and then stand there proudly
+                                            //this.ST_beginConversation(king, robber),
+                                            (new DecoratorLoop(ST_playFaceAnimation("HEADNOD", true, knight)))
+                                        ))
+                                    ),
+                                   
+                                        ( new SelectorParallel (
+                                            //this.ST_beginConversation(knight, robber),
+                                            (new DecoratorLoop(
+                                            (ST_playFaceAnimation("SAD", true, knight)))),
+                                            (new DecoratorLoop(
+                                            (this.ST_Approach(wander9, robber))))
+                                        )
+                                       )
+                                   
+                                   //(ST_playFaceAnimation("SAD", true, knight))
+                                ))
+                                
+
 
                                 ))
                             ),

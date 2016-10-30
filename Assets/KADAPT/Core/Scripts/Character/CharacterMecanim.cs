@@ -351,6 +351,12 @@ public class CharacterMecanim : MonoBehaviour
                     return RunStatus.Success;
                 }
                 break;
+            case 2:
+                if (conversation2(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
             default :
                 return RunStatus.Success;
         }
@@ -389,6 +395,36 @@ public class CharacterMecanim : MonoBehaviour
            case 2:
                 conversationText.text = "King: NO!";
                 break;
+            default:
+                conversationText.text = "";
+                return 0;
+        }
+        return 1;
+    }
+
+    public int conversation2(int conversationPart, Text conversationText)
+    {
+        switch (conversationPart)
+        {
+            case 0:
+                conversationText.text = "King: Congradulations on completing your mission!";
+                break;
+            case 1:
+                conversationText.text = "King: You now have two option: either execute the robber or show mercy?";
+                break;
+            case 2:
+                conversationText.text = "King: Press Y if you want to execute and N if you want to show mercy";
+                break;
+            //execute
+            case 3:
+                conversationText.text = "";
+                return 0;
+
+            //show mercy
+            case 4:
+                conversationText.text = "King: He is getting away...";
+                return 0;
+
             default:
                 conversationText.text = "";
                 return 0;
