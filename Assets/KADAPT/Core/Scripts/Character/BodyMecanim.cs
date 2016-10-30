@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using TreeSharpPlus;
-
+using UnityEngine.UI;
 using RootMotion.FinalIK;
 
 /// <summary>
@@ -700,25 +700,62 @@ public class BodyMecanim : MonoBehaviour
     #endregion
 
     public GameObject converseBubble;
+    GameObject converseBubble1;
+    GameObject converseBubble2;
 
-    public void converse(GameObject guy1, GameObject guy2, bool isActive)
+    public void startConverse(GameObject guy1, GameObject guy2, bool isActive)
     {
 
         if (isActive == true)
             this.ResetAnimation();
 
-        GameObject converseBubble1 = (GameObject)Instantiate(converseBubble, new Vector3(0, 0, 0), Quaternion.identity);
+         converseBubble1 = (GameObject)Instantiate(converseBubble, new Vector3(0, 0, 0), Quaternion.identity);
         converseBubble1.transform.parent = guy1.transform;
         converseBubble1.transform.localPosition = new Vector3(0, 2.5f, 0);
         converseBubble1.SetActive(true);
 
-        GameObject converseBubble2 = (GameObject)Instantiate(converseBubble, new Vector3(0, 0, 0), Quaternion.identity);
+         converseBubble2 = (GameObject)Instantiate(converseBubble, new Vector3(0, 0, 0), Quaternion.identity);
         converseBubble2.transform.parent = guy2.transform;
         converseBubble2.transform.localPosition = new Vector3(0, 2.5f, 0);
         converseBubble2.SetActive(true);
 
     }
 
+    public void endConverse(bool isActive)
+    {
+
+        if (isActive == true)
+            this.ResetAnimation();
+
+        Destroy(converseBubble1);
+
+        Destroy(converseBubble2);
+
+    }
+
+
+    public bool sees(GameObject seer, GameObject seen)
+    {
+        RaycastHit hit;
+        Vector3 fromSeerToSeen = seen.transform.position + new Vector3(0, 1, 0) - (seer.transform.position + new Vector3(0, 1, 0));
+
+        fromSeerToSeen=fromSeerToSeen.normalized;
+       
+        if (Physics.Raycast(seer.transform.position + new Vector3(0, 1, 0), fromSeerToSeen, out hit, 50))
+        {
+
+            if (hit.transform.gameObject.name == seen.name)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+        
+    }
 
 
 }

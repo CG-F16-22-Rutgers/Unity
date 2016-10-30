@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using TreeSharpPlus;
-
+using UnityEngine.UI;
 using RootMotion.FinalIK;
 
 public enum AnimationLayer
@@ -312,10 +312,32 @@ public class BehaviorMecanim : MonoBehaviour
     #endregion
 
 
-    public Node Node_Conversation(Val<GameObject> guy1, Val<GameObject> guy2, Val<bool> start)
+    public Node Node_BeginConversation(Val<GameObject> guy1, Val<GameObject> guy2, Val<bool> start)
     {
         return new LeafInvoke(
-            () => this.Character.conversation(guy1, guy2, start),
-            () => this.Character.conversation(guy1, guy2, false));
+            () => this.Character.startConversation(guy1, guy2, start),
+            () => this.Character.startConversation(guy1, guy2, false));
+    }
+
+
+    public Node Node_ConversationInProcess(Val<bool> start, Val<object> conversationPart, Val<object> conversationNumber, Val<Text> conversationText)
+    {
+        return new LeafInvoke(
+            () => this.Character.progressConversation(start, conversationPart, conversationNumber, conversationText));
+            //() => this.Character.progressConversation(false, conversationPart, conversationNumber, conversationText));
+    }
+
+
+    public Node Node_EndConversation(Val<bool> start)
+    {
+        return new LeafInvoke(
+            () => this.Character.endConversation( start),
+            () => this.Character.endConversation(false));
+    }
+
+    public Node Node_Sees(Val<GameObject> seer, Val<GameObject> seen, Val<object> isActive)
+    {
+        return new LeafInvoke(
+            () => this.Character.sees(seer, seen, isActive));
     }
 }

@@ -3,8 +3,8 @@ using TreeSharpPlus;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using RootMotion.FinalIK;
+using UnityEngine.UI;
 
 public class CharacterMecanim : MonoBehaviour
 {
@@ -118,7 +118,6 @@ public class CharacterMecanim : MonoBehaviour
     {
         if (this.Body.NavCanReach(target.Value) == false)
         {
-            Debug.LogWarning("NavGoTo failed -- can't reach target");
             return RunStatus.Failure;
         }
         // TODO: I previously had this if statement here to prevent spam:
@@ -202,7 +201,9 @@ public class CharacterMecanim : MonoBehaviour
     {
         this.Body.NavStop();
         if (this.Body.NavIsStopped() == true)
+        {
             return RunStatus.Success;
+        }
         return RunStatus.Running;
         // TODO: Timeout? - AS
     }
@@ -327,11 +328,96 @@ public class CharacterMecanim : MonoBehaviour
     }
     #endregion
 
-    public virtual RunStatus conversation(Val<GameObject> guy1, Val<GameObject> guy2, Val<bool> isActive)
+    public virtual RunStatus startConversation(Val<GameObject> guy1, Val<GameObject> guy2, Val<bool> isActive)
     {
-        this.Body.converse(guy1.Value, guy2.Value, isActive.Value);
+        this.Body.startConverse(guy1.Value, guy2.Value, isActive.Value);
+        return RunStatus.Success;
+    }
+    public virtual RunStatus progressConversation(Val<bool> isActive, Val<object> conversationP, Val<object> conversationN, Val<Text> conversationText)
+    {
+        int conversationNumber = (int)conversationN.Value;
+        int conversationPart = (int)conversationP.Value;
+        switch (conversationNumber)
+        {
+            case 0:
+                if(conversation0(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 1:
+                if (conversation1(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            default :
+                return RunStatus.Success;
+        }
+        return RunStatus.Running;
+    }
+
+    public int conversation0(int conversationPart, Text conversationText)
+    {
+        switch (conversationPart)
+        {
+            case 0:
+                conversationText.text = "King: You have to go out and find my son's killer!";
+                break;
+            case 1:
+                conversationText.text = "Knight: I will do as you say, sir.";
+                break;
+            default:
+                conversationText.text = "";
+                return 0;
+        }
+        return 1;
+
+    }
+
+
+    public int conversation1(int conversationPart, Text conversationText)
+    {
+        switch (conversationPart)
+        {
+            case 0:
+                conversationText.text = "King: You have failed the mission!";
+                break;
+            case 1:
+                conversationText.text = "Knight: But will I get another chance?";
+                break;
+           case 2:
+                conversationText.text = "King: NO!";
+                break;
+            default:
+                conversationText.text = "";
+                return 0;
+        }
+        return 1;
+
+    }
+
+
+    public virtual RunStatus endConversation(Val<bool> isActive)
+    {
+        this.Body.endConverse(isActive.Value);
         return RunStatus.Success;
     }
 
+    public virtual RunStatus sees(Val<GameObject> seer, Val<GameObject> seen, Val<object> isActive)
+    {
+        if(this.Body.sees(seer.Value, seen.Value))
+        {
+            Debug.Log("We see the guy");
+            return RunStatus.Success;
+        }
+        if ((bool)(isActive.Value) == false)
+        {
+            return RunStatus.Failure;
+        }else
+        {
+            return RunStatus.Running;
+        }
+    }
 
 }

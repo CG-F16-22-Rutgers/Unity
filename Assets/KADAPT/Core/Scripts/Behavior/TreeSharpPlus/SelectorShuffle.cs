@@ -49,10 +49,15 @@ namespace TreeSharpPlus
                 {
                     yield return RunStatus.Success;
                     yield break;
+                }else if(result == RunStatus.Failure)
+                {
+                    yield return RunStatus.Failure;
+                    yield break;
                 }
 
                 // Otherwise, we're still running
                 yield return RunStatus.Running;
+                break;
             }
             // We ran out of children, and none succeeded. Return failed.
             yield return RunStatus.Failure;
