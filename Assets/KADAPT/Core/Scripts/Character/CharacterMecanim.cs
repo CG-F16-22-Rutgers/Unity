@@ -458,7 +458,7 @@ public class CharacterMecanim : MonoBehaviour
 
     public virtual RunStatus punch(Val<GameObject> character, Val<Transform> body)
     {
-            Punch p = character.Value.GetComponent<Punch>();
+            PunchController p = character.Value.GetComponent<PunchController>();
             p.punch(body.Value.transform, body.Value);
         
             return RunStatus.Success;
@@ -492,7 +492,7 @@ public class CharacterMecanim : MonoBehaviour
     }
     public virtual RunStatus unpunch(Val<GameObject> character)
     {
-        Punch k = character.Value.GetComponent<Punch>();
+        PunchController k = character.Value.GetComponent<PunchController>();
 
 
 

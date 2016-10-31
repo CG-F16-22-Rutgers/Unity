@@ -4,7 +4,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Animator))] 
 
-public class Punch : MonoBehaviour {
+public class PunchController : MonoBehaviour {
     
     protected Animator animator;
     
