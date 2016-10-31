@@ -17,14 +17,14 @@ public class Punch : MonoBehaviour {
         animator = GetComponent<Animator>();
     }
 
-	void punch(Transform rightHandObj, Transform lookObj) {
+	public void punch(Transform rightHandObj, Transform lookObj) {
 		this.rightHandObj = rightHandObj;
 		this.lookObj = lookObj;
-		ikActive = true;
+        active = true;
 	}
 
-	void unpunch() {
-		ikActive = false;
+    public void unpunch() {
+        active = false;
 		rightHandObj = null;
 		lookObj = null;
 	}
@@ -35,7 +35,7 @@ public class Punch : MonoBehaviour {
         if(animator) {
             
             //if the IK is active, set the position and rotation directly to the goal. 
-            if(ikActive) {
+            if(active) {
 
                 // Set the look target position, if one has been assigned
                 if(lookObj != null) {

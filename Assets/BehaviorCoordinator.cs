@@ -21,6 +21,8 @@ public class BehaviorCoordinator : MonoBehaviour
     public GameObject king;
     public GameObject knight;
     public GameObject robber;
+    public Transform robberFace;
+    public Transform robberChest;
 
     private BehaviorAgent behaviorAgent;
     // Use this for initialization
@@ -49,6 +51,9 @@ public class BehaviorCoordinator : MonoBehaviour
     public object conversationNumber3;
     public object isActive1;
     public object isActive2;
+
+ 
+
     bool yesWasPressed;
 
     // Update is called once per frame
@@ -177,7 +182,28 @@ public class BehaviorCoordinator : MonoBehaviour
         Val<object> isActive = Val.V(() => isActive2);
         return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_Sees(ges, dur, isActive));
     }
-
+    protected Node ST_punch(GameObject character, Transform body)
+    {
+        Val<GameObject> c = Val.V(() => character);
+        Val<Transform> b = Val.V(() => body);
+        return new Sequence(character.GetComponent<BehaviorMecanim>().Node_Punch(c, b));
+    }
+    protected Node ST_kick(GameObject character, Transform body)
+    {
+        Val<GameObject> c = Val.V(() => character);
+        Val<Transform> b = Val.V(() => body);
+        return new Sequence(character.GetComponent<BehaviorMecanim>().Node_Punch(c, b));
+    }
+    protected Node ST_unkick()
+    {
+        Val<GameObject> c = Val.V(() => knight);
+        return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_unkick(c));
+    }
+    protected Node ST_unpunch()
+    {
+        Val<GameObject> c = Val.V(() => knight);
+        return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_unpunch(c));
+    }
 
     public Transform kingFrontPosition;
 
@@ -296,7 +322,11 @@ public class BehaviorCoordinator : MonoBehaviour
                                             (new LeafAssert(wasYesPressed)),
                                             //execute
                                             //DO EXECUTION----------------------------------------------------------------------------------
-                                            (new TreeSharpPlus.RandomNode(this.ST_beginConversation(knight, robber), this.ST_beginConversation(king, robber))),
+                                            (new TreeSharpPlus.RandomNode(
+                                                
+                                                (new Sequence (this.ST_kick(knight, robberChest), this.ST_unkick())),
+
+                                                (new Sequence(this.ST_punch(king, robberFace))), this.ST_unpunch())),
                                             //-----------------------------------------------------------------------------------------------
                                             //and then stand there proudly
                                             //this.ST_beginConversation(king, robber),

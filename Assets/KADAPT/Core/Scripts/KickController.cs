@@ -17,13 +17,13 @@ public class KickController : MonoBehaviour {
         animator = GetComponent<Animator>();
     }
 
-	void kick(Transform rightHandObj, Transform lookObj) {
+	public void kick(Transform rightHandObj, Transform lookObj) {
 		this.rightHandObj = rightHandObj;
 		this.lookObj = lookObj;
 		ikActive = true;
 	}
 
-	void unkick() {
+    public void unkick() {
 		ikActive = false;
 		rightHandObj = null;
 		lookObj = null;

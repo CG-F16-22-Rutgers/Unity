@@ -456,4 +456,51 @@ public class CharacterMecanim : MonoBehaviour
         }
     }
 
+    public virtual RunStatus punch(Val<GameObject> character, Val<Transform> body)
+    {
+            Punch p = character.Value.GetComponent<Punch>();
+            p.punch(body.Value.transform, body.Value);
+        
+            return RunStatus.Success;
+        
+
+    }
+
+    public virtual RunStatus kick(Val<GameObject> character, Val<Transform> body)
+    {
+        KickController k = character.Value.GetComponent<KickController>();
+
+
+
+        k.kick(body.Value.transform, body.Value);
+
+        return RunStatus.Success;
+
+
+    }
+    public virtual RunStatus unkick(Val<GameObject> character)
+    {
+        KickController k = character.Value.GetComponent<KickController>();
+
+
+
+        k.unkick();
+
+        return RunStatus.Success;
+
+
+    }
+    public virtual RunStatus unpunch(Val<GameObject> character)
+    {
+        Punch k = character.Value.GetComponent<Punch>();
+
+
+
+        k.unpunch();
+
+        return RunStatus.Success;
+
+
+    }
+
 }

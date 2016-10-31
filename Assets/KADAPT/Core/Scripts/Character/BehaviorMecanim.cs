@@ -340,4 +340,27 @@ public class BehaviorMecanim : MonoBehaviour
         return new LeafInvoke(
             () => this.Character.sees(seer, seen, isActive));
     }
+
+    public Node Node_Punch(Val<GameObject> character, Val<Transform> body)
+    {
+        return new LeafInvoke(
+            () => this.Character.punch(character, body));
+    }
+
+    public Node Node_Kick(Val<GameObject> character, Val<Transform> body)
+    {
+        return new LeafInvoke(
+            () => this.Character.kick(character, body));
+    }
+    public Node Node_unkick(Val<GameObject> character)
+    {
+        return new LeafInvoke(
+            () => this.Character.unkick(character));
+    }
+    public Node Node_unpunch(Val<GameObject> character)
+    {
+        return new LeafInvoke(
+            () => this.Character.unpunch(character));
+    }
+
 }
