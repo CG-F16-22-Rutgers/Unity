@@ -21,6 +21,7 @@ public class PunchController : MonoBehaviour {
 		this.rightHandObj = rightHandObj;
 		this.lookObj = lookObj;
         active = true;
+        Debug.Log("punch");
 	}
 
     public void unpunch() {

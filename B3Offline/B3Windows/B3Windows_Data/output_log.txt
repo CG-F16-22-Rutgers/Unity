@@ -1,0 +1,123 @@
+Initialize engine version: 5.4.1f1 (649f48bbbf0f)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: Intel(R) HD Graphics 4600 (ID=0x416)
+    Vendor:   Intel
+    VRAM:     1136 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.187 seconds
+Platform assembly: C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Maxim\Documents\GitHub\Unity\Unity\B3Offline\B3Windows\B3Windows_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 4800x1350 at -2400,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+The referenced script on this Behaviour (Game Object 'HOLD_Hidden') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'HOLD_RightHand') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'HOLD_Hidden') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'HOLD_Pocket') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'HOLD_Hidden') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'HOLD_Pocket') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'Harry') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'HOLD_Pocket') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'Daniel') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'HOLD_RightHand') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'King') is missing!
+ 
+(Filename:  Line: 1656)
+
+The referenced script on this Behaviour (Game Object 'HOLD_RightHand') is missing!
+ 
+(Filename:  Line: 1656)
+
+UnloadTime: 0.922451 ms
+UnityException: Tag: Marker is not defined.
+  at (wrapper managed-to-native) UnityEngine.Component:CompareTag (string)
+  at RootMotion.FinalIK.Demos.HandPoser.<Start>m__1F (UnityEngine.Transform child) [0x00000] in <filename unknown>:0 
+  at System.Linq.Enumerable+<CreateWhereIterator>c__Iterator1D`1[UnityEngine.Transform].MoveNext () [0x00000] in <filename unknown>:0 
+  at System.Collections.Generic.List`1[UnityEngine.Transform].AddEnumerable (IEnumerable`1 enumerable) [0x00000] in <filename unknown>:0 
+  at System.Collections.Generic.List`1[UnityEngine.Transform]..ctor (IEnumerable`1 collection) [0x00000] in <filename unknown>:0 
+  at RootMotion.FinalIK.Demos.HandPoser.Start () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+UnityException: Tag: Marker is not defined.
+  at (wrapper managed-to-native) UnityEngine.Component:CompareTag (string)
+  at RootMotion.FinalIK.Demos.HandPoser.<Start>m__1F (UnityEngine.Transform child) [0x00000] in <filename unknown>:0 
+  at System.Linq.Enumerable+<CreateWhereIterator>c__Iterator1D`1[UnityEngine.Transform].MoveNext () [0x00000] in <filename unknown>:0 
+  at System.Collections.Generic.List`1[UnityEngine.Transform].AddEnumerable (IEnumerable`1 enumerable) [0x00000] in <filename unknown>:0 
+  at System.Collections.Generic.List`1[UnityEngine.Transform]..ctor (IEnumerable`1 collection) [0x00000] in <filename unknown>:0 
+  at RootMotion.FinalIK.Demos.HandPoser.Start () [0x00000] in <filename unknown>:0 
+ 
+(Filename:  Line: -1)
+
+We begin talk
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+We begin talk
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+We begin talk
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+IKSolverLookAt spine setup is invalid. Can't initiate solver.
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 6628 -> priority: 1 
+  Thread -> id: 96b4 -> priority: 1 
+conversatonPart: 1
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+
+conversatonPart: 2
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 42)
+

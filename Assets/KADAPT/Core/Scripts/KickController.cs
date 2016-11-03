@@ -21,6 +21,7 @@ public class KickController : MonoBehaviour {
 		this.rightHandObj = rightHandObj;
 		this.lookObj = lookObj;
 		ikActive = true;
+        Debug.Log("kick");
 	}
 
     public void unkick() {

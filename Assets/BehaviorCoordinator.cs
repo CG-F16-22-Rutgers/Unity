@@ -186,13 +186,13 @@ public class BehaviorCoordinator : MonoBehaviour
     {
         Val<GameObject> c = Val.V(() => character);
         Val<Transform> b = Val.V(() => body);
-        return new Sequence(character.GetComponent<BehaviorMecanim>().Node_Punch(c, b));
+        return new Sequence(character.GetComponent<BehaviorMecanim>().Node_Punch(c, b), new LeafWait(100));
     }
     protected Node ST_kick(GameObject character, Transform body)
     {
         Val<GameObject> c = Val.V(() => character);
         Val<Transform> b = Val.V(() => body);
-        return new Sequence(character.GetComponent<BehaviorMecanim>().Node_Punch(c, b));
+        return new Sequence(character.GetComponent<BehaviorMecanim>().Node_Kick(c, b), new LeafWait(100));
     }
     protected Node ST_unkick()
     {
@@ -205,7 +205,15 @@ public class BehaviorCoordinator : MonoBehaviour
         return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_unpunch(c));
     }
 
+    protected Node ST_destroyGuy(GameObject character)
+    {
+        Val<GameObject> c= Val.V(() => character);
+        return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_destroy(character));
+    }
+
     public Transform kingFrontPosition;
+    public Transform robberFrontPositionKick;
+    public Transform robberFrontPositionPunch;
 
     protected Node BuildTreeRoot()
     {
@@ -320,13 +328,38 @@ public class BehaviorCoordinator : MonoBehaviour
                                     (new DecoratorInvert
                                         (new Sequence (
                                             (new LeafAssert(wasYesPressed)),
+                                            
                                             //execute
                                             //DO EXECUTION----------------------------------------------------------------------------------
                                             (new TreeSharpPlus.RandomNode(
                                                 
-                                                (new Sequence (this.ST_kick(knight, robberChest), this.ST_unkick())),
+                                                (new Sequence (
+                                                    new DecoratorInvert(
+                                                        (new DecoratorLoop(
+                                                            new DecoratorInvert(
+                                                                new Sequence(
+                                                                    (this.ST_Approach(robberFrontPositionKick.transform, knight))
+                                                                )
+                                                            )
+                                                        ))
+                                                    ),
+                                                    this.ST_kick(knight, robberChest),
+                                                    this.ST_unkick(),
+                                                    ST_destroyGuy(robber))),//this.ST_unkick()
 
-                                                (new Sequence(this.ST_punch(king, robberFace))), this.ST_unpunch())),
+                                                (new Sequence(
+                                                    new DecoratorInvert(
+                                                        (new DecoratorLoop(
+                                                            new DecoratorInvert(
+                                                                new Sequence(
+                                                                    (this.ST_Approach(robberFrontPositionPunch.transform, knight))
+                                                                )
+                                                            )
+                                                        ))
+                                                    ),
+                                                    this.ST_punch(knight, robberFace), 
+                                                    this.ST_unpunch(), 
+                                                    ST_destroyGuy(robber))))),//this.ST_unpunch()
                                             //-----------------------------------------------------------------------------------------------
                                             //and then stand there proudly
                                             //this.ST_beginConversation(king, robber),
@@ -341,12 +374,14 @@ public class BehaviorCoordinator : MonoBehaviour
                                             (new DecoratorLoop(
                                                 (new TreeSharpPlus.RandomNode (
                                                     (this.ST_Approach(wander1, robber)),
-                                                    (this.ST_Approach(wander1, robber)),
-                                                    (this.ST_Approach(wander1, robber)),
-                                                    (this.ST_Approach(wander1, robber)),
-                                                    (this.ST_Approach(wander1, robber)),
-                                                    (this.ST_Approach(wander1, robber)),
-                                                    (this.ST_Approach(wander1, robber))
+                                                    (this.ST_Approach(wander2, robber)),
+                                                    (this.ST_Approach(wander3, robber)),
+                                                    (this.ST_Approach(wander4, robber)),
+                                                    (this.ST_Approach(wander5, robber)),
+                                                    (this.ST_Approach(wander6, robber)),
+                                                    (this.ST_Approach(wander7, robber)),
+                                                    (this.ST_Approach(wander8, robber)),
+                                                    (this.ST_Approach(wander9, robber))
                                                 ))
                                             ))
                                        ))

@@ -362,5 +362,10 @@ public class BehaviorMecanim : MonoBehaviour
         return new LeafInvoke(
             () => this.Character.unpunch(character));
     }
+    public Node Node_destroy(Val<GameObject> character)
+    {
+        return new LeafInvoke(
+            () => this.Character.destroy(character));
+    }
 
 }

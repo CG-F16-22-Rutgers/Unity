@@ -503,4 +503,13 @@ public class CharacterMecanim : MonoBehaviour
 
     }
 
+    public virtual RunStatus destroy(Val<GameObject> character)
+    {
+        Destroy(character.Value);
+
+        return RunStatus.Success;
+
+
+    }
+
 }
