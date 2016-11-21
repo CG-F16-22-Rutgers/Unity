@@ -171,7 +171,8 @@ public class BehaviorCoordinator : MonoBehaviour
         Val<GameObject> ges = Val.V(() => king);
         Val<GameObject> dur = Val.V(() => robber);
         Val<object> isActive = Val.V(() => isActive1);
-        return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_Sees(ges, dur, isActive));
+        Val<float> d = Val.V(() => 50f);
+        return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_Sees(ges, dur, isActive,d,d));
     }
     protected Node ST_Sees2(GameObject king, GameObject robber)
     {
@@ -180,7 +181,8 @@ public class BehaviorCoordinator : MonoBehaviour
         Val<GameObject> ges = Val.V(() => king);
         Val<GameObject> dur = Val.V(() => robber);
         Val<object> isActive = Val.V(() => isActive2);
-        return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_Sees(ges, dur, isActive));
+        Val<float> d = Val.V(() => 50f);
+        return new Sequence(knight.GetComponent<BehaviorMecanim>().Node_Sees(ges, dur, isActive,d,d));
     }
     protected Node ST_punch(GameObject character, Transform body)
     {

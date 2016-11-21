@@ -22,6 +22,8 @@ namespace TreeSharpPlus
             this.func_assert = assertion;
         }
 
+
+
         public override IEnumerable<RunStatus> Execute()
         {
             if (this.func_assert != null)

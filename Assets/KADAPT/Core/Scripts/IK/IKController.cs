@@ -442,6 +442,10 @@ public class IKController : MonoBehaviour
 
     void Update()
     {
+        if (bodyController == null)
+        {
+            return;
+        }
         this.bodyController.Update();
         this.lookController.Update();
 

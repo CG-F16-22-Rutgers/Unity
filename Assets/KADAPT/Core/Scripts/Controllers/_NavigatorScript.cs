@@ -35,7 +35,7 @@ public class _NavigatorScript : MonoBehaviour
             //TODO Resetting path here, otherwise e.g. stepback animation not working properly - CS 03.09.2014
             //Is there a better solution?
             agent.ResetPath();
-			locomotion.Do(0, angleDiff);
+			locomotion.Do(0, 0);
 		}
 		else
 		{

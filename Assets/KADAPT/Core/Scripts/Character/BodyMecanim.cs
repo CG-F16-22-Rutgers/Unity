@@ -734,14 +734,14 @@ public class BodyMecanim : MonoBehaviour
     }
 
 
-    public bool sees(GameObject seer, GameObject seen)
+    public bool sees(GameObject seer, GameObject seen, float distance)
     {
         RaycastHit hit;
         Vector3 fromSeerToSeen = seen.transform.position + new Vector3(0, 1, 0) - (seer.transform.position + new Vector3(0, 1, 0));
 
         fromSeerToSeen=fromSeerToSeen.normalized;
        
-        if (Physics.Raycast(seer.transform.position + new Vector3(0, 1, 0), fromSeerToSeen, out hit, 50))
+        if (Physics.Raycast(seer.transform.position + new Vector3(0, 1, 0), fromSeerToSeen, out hit, distance))
         {
 
             if (hit.transform.gameObject.name == seen.name)
@@ -757,7 +757,29 @@ public class BodyMecanim : MonoBehaviour
         
     }
 
-    
+    public bool seesForward(GameObject seer, GameObject seen, float distance)
+    {
+        RaycastHit hit;
+        Vector3 fromSeerToSeen = seer.transform.forward ;
+
+        //fromSeerToSeen = fromSeerToSeen.normalized;
+
+        if (Physics.Raycast(seer.transform.position + new Vector3(0, 1, 0), fromSeerToSeen, out hit, distance))
+        {
+
+            if (hit.transform.gameObject.name == seen.name)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+
+    }
+
 
 
 }

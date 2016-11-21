@@ -72,13 +72,31 @@ public class CharacterMecanim : MonoBehaviour
     /// </summary>
     public virtual RunStatus NavTurn(Val<Vector3> target)
     {
-        this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
-        this.Body.NavSetDesiredOrientation(target.Value);
-        if (this.Body.NavIsFacingDesired() == true)
+        Debug.Log("We are at:" + this.gameObject.transform.position);
+        Debug.Log("Want to turn to :" + target.Value);
+        if (target.Value.y == 0)
         {
-            this.Body.NavSetOrientationBehavior(
-                OrientationBehavior.LookForward);
-            return RunStatus.Success;
+            Debug.Log("our y value is 0. so we made the desired location:" + new Vector3(target.Value.x, 2, target.Value.z));
+            Debug.Log("We are at:" + this.gameObject.transform.position);
+            this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
+            this.Body.NavSetDesiredOrientation(new Vector3(target.Value.x, 2, target.Value.z));
+            if (this.Body.NavIsFacingDesired() == true)
+            {
+                this.Body.NavSetOrientationBehavior(
+                    OrientationBehavior.LookForward);
+                return RunStatus.Success;
+            }
+        }
+        else
+        {
+            this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
+            this.Body.NavSetDesiredOrientation(target.Value);
+            if (this.Body.NavIsFacingDesired() == true)
+            {
+                this.Body.NavSetOrientationBehavior(
+                    OrientationBehavior.LookForward);
+                return RunStatus.Success;
+            }
         }
         return RunStatus.Running;
     }
@@ -129,9 +147,16 @@ public class CharacterMecanim : MonoBehaviour
         this.Body.NavGoTo(target.Value);
         if (this.Body.NavHasArrived() == true)
         {
+            if (this.gameObject.name == "Robber")
+            {
+                Debug.Log("we finished getting");
+            }
             this.Body.NavStop();
             return RunStatus.Success;
         }
+
+        
+
         return RunStatus.Running;
         // TODO: Timeout? - AS
     }
@@ -440,9 +465,9 @@ public class CharacterMecanim : MonoBehaviour
         return RunStatus.Success;
     }
 
-    public virtual RunStatus sees(Val<GameObject> seer, Val<GameObject> seen, Val<object> isActive)
+    public virtual RunStatus sees(Val<GameObject> seer, Val<GameObject> seen, Val<object> isActive, Val<float>dist, Val<float> distForward)
     {
-        if(this.Body.sees(seer.Value, seen.Value))
+        if(this.Body.sees(seer.Value, seen.Value, dist.Value)|| this.Body.seesForward(seer.Value, seen.Value, distForward.Value))
         {
             Debug.Log("We see the guy");
             return RunStatus.Success;
@@ -452,7 +477,7 @@ public class CharacterMecanim : MonoBehaviour
             return RunStatus.Failure;
         }else
         {
-            return RunStatus.Running;
+            return RunStatus.Failure;
         }
     }
 
@@ -505,6 +530,17 @@ public class CharacterMecanim : MonoBehaviour
 
     public virtual RunStatus destroy(Val<GameObject> character)
     {
+        //Check if camera and if there is place it on top...
+        if(character.Value.transform.Find("Main Camera")){
+            Camera.main.transform.parent = character.Value.transform.parent;
+            Camera.main.transform.position = character.Value.transform.position+new Vector3(0,1,0);
+            Camera.main.GetComponent<mainCameraControls>().enabled = true;
+            Camera.main.GetComponent<MouseLook>().enabled = true;
+
+
+        }
+
+
         Destroy(character.Value);
 
         return RunStatus.Success;
@@ -512,4 +548,115 @@ public class CharacterMecanim : MonoBehaviour
 
     }
 
+    public virtual RunStatus changeCam(Val<GameObject> character)
+    {
+        //Check if camera and if there is place it on top...
+        if (character.Value.transform.Find("Main Camera"))
+        {
+            //Camera.main.transform.parent = character.Value.transform.parent;
+            Camera.main.transform.position = character.Value.transform.position + new Vector3(0, 5, 0)-10*character.Value.transform.forward;
+            Camera.main.GetComponent<mainCameraControls>().enabled = true;
+            Camera.main.GetComponent<MouseLook>().enabled = true;
+
+
+        }
+
+        return RunStatus.Success;
+
+
+    }
+
+
+
+    public virtual RunStatus findFrontCharacter(Val<GameObject> character, Val<GameObject>director)
+    {
+        //first find the front person...
+        //cast ray from character forward. we'll see if player in direct front
+        RaycastHit hit;
+        GameObject stealFrom;
+        stealFrom = character.Value;
+        Debug.Log("character.Value.transform.position:" + character.Value.transform.position);
+        //Debug.DrawLine(character.Value.transform.forward);
+        if (Physics.Raycast(character.Value.transform.position + new Vector3(0, 1.5f, 0), character.Value.transform.forward, out hit, 1))
+        {
+            Debug.DrawLine(character.Value.transform.position + new Vector3(0, 1.5f, 0), hit.point, Color.cyan, 1);
+            Debug.Log("We hit something");
+            Debug.Log("name: "+hit.transform.name);
+
+            if (hit.transform.name.Length >=6&&hit.transform.name.Substring(0,6)== "Person")
+            {
+                stealFrom = hit.transform.gameObject;
+            }
+        }
+
+        //Val<GameObject> stealF = Val.V(() => stealFrom);
+        this.gameObject.GetComponent<BehaviorMecanim>().stealChar = stealFrom;
+        
+
+        if (stealFrom != character.Value)
+        {
+            Debug.Log("we found character to steal from");
+            return RunStatus.Success;
+        }else
+        {
+            Debug.Log("We did not find any character to steal from");
+
+            return RunStatus.Failure;
+        }
+
+
+    }
+
+    public virtual RunStatus increaseMoney(Val<Text> text)
+    {
+        string moneyString = text.Value.text;
+        int money = Convert.ToInt32(moneyString);
+        money = money + UnityEngine.Random.Range(0, 10);
+        text.Value.text = "" + money;
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus turnMovement(Val<bool> isActive, Val<GameObject> director)
+    {
+        if (isActive.Value)
+        {
+            director.Value.GetComponent<BehaviorCoordinatorb4>().movementOn = true;
+            director.Value.GetComponent<BehaviorCoordinatorb4Phase1>().movementOn = true;
+            //Debug.Log("movement is ON");
+        }
+        else
+        {
+            director.Value.GetComponent<BehaviorCoordinatorb4>().movementOn = false;
+            director.Value.GetComponent<BehaviorCoordinatorb4Phase1>().movementOn = false;
+            // Debug.Log("Movement is OFF");
+        }
+        return RunStatus.Success;
+
+    }
+
+    public virtual RunStatus changeArcName(Val<string> newArc, Val<GameObject> director)
+    {
+        
+            director.Value.GetComponent<BehaviorCoordinatorb4>().currentArc = newArc.Value;
+        director.Value.GetComponent<BehaviorCoordinatorb4Phase1>().currentArc = newArc.Value;
+
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus winGame(Val<Text> text, Val<Text> conversationText)
+    {
+        string moneyString = text.Value.text;
+        int money = Convert.ToInt32(moneyString);
+        money = money -20;
+        text.Value.text = "" + money;
+        conversationText.Value.text="You bought from a vender a magic item that kills everyone";
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus convertSpeeds(Val<GameObject> chased,  Val<GameObject> chaser1, Val<GameObject> chaser2, Val<float> factorSpeed)
+    {
+        chaser1.Value.GetComponent<UnitySteeringController>().maxSpeed = chased.Value.GetComponent<UnitySteeringController>().maxSpeed * factorSpeed.Value;
+        chaser2.Value.GetComponent<UnitySteeringController>().maxSpeed = chased.Value.GetComponent<UnitySteeringController>().maxSpeed * factorSpeed.Value;
+        return RunStatus.Success;
+    }
 }

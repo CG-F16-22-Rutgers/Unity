@@ -14,6 +14,8 @@ public enum AnimationLayer
 
 public class BehaviorMecanim : MonoBehaviour
 {
+    public GameObject stealChar;
+
     [HideInInspector]
     public CharacterMecanim Character = null;
 
@@ -335,10 +337,10 @@ public class BehaviorMecanim : MonoBehaviour
             () => this.Character.endConversation(false));
     }
 
-    public Node Node_Sees(Val<GameObject> seer, Val<GameObject> seen, Val<object> isActive)
+    public Node Node_Sees(Val<GameObject> seer, Val<GameObject> seen, Val<object> isActive, Val<float> dist, Val<float> distForward)
     {
         return new LeafInvoke(
-            () => this.Character.sees(seer, seen, isActive));
+            () => this.Character.sees(seer, seen, isActive, dist, distForward));
     }
 
     public Node Node_Punch(Val<GameObject> character, Val<Transform> body)
@@ -366,6 +368,268 @@ public class BehaviorMecanim : MonoBehaviour
     {
         return new LeafInvoke(
             () => this.Character.destroy(character));
+    }
+
+   // public void setStealChar(GameObject c)
+   // {
+   //    stealChar=c;
+   // }
+
+
+
+    public Node ST_stealFromPlayerFront(Val<GameObject> character, Val<GameObject> director, Val<Text> text)
+    {
+
+        Val<string> newArc = "walkAround";
+
+        //return new LeafInvoke(
+        //   () => this.Character.startConversation(character, stealF, true),
+        //   () => this.Character.startConversation(character, stealF, false));
+        return new Sequence(
+            (new LeafInvoke(
+                () => this.Character.changeArcName(newArc, director))),
+            new LeafInvoke(
+                () => this.Character.findFrontCharacter(character, director)
+            ),
+            //character has been found so now, walk up to his back
+            //new LeafInvoke(
+            //    () => this.Character.NavGoTo(stealChar.transform.position - stealChar.transform.forward),
+            //    () => this.Character.NavStop()
+            //),
+            // new LeafInvoke(
+             //   () => this.Character.startConversation(character, stealChar, true),
+            //    () => this.Character.startConversation(character, stealChar, false)),
+              //now reach down in pocket
+              //Node_StartInteraction(FullBodyBipedEffector.RightHand,(InteractionObject)(stealChar.transform.Find("Inter_StealWallet").GetComponent<InteractionObject>()))
+
+              //just use hand animation
+              /*new LeafInvoke(
+                 () => this.Character.HandAnimation("REACHRIGHT", true),
+                 () => this.Character.HandAnimation("REACHRIGHT", false))*/
+
+
+              //InteractionObject
+              new LeafInvoke(
+                () => this.Character.StartInteraction(FullBodyBipedEffector.RightHand, stealChar.transform.parent.GetChild(4).GetChild(3).GetComponent<InteractionObject>()),
+                () => this.Character.StopInteraction(FullBodyBipedEffector.RightHand)),
+              new LeafWait(700),
+              new LeafInvoke(
+                () => this.Character.StopInteraction(FullBodyBipedEffector.RightHand)),
+              new LeafInvoke(
+                () => this.Character.increaseMoney(text)),
+              (new LeafInvoke(
+                () => stealChar.transform.parent.GetComponent<CharacterMecanim>().HandAnimation("SURPRISED", true)
+                )),
+                new LeafWait(5000),
+                (new LeafInvoke(
+                () => stealChar.transform.parent.GetComponent<CharacterMecanim>().HandAnimation("SURPRISED", false)
+                ))//,
+                //(new LeafInvoke(
+                //() => this.Character.changeArcName(newArc, director)))
+
+       );
+    }
+
+    public Node ST_stealFromGuy(Val<GameObject> character, Val<GameObject> stealFrom, Val<GameObject> director, Val<Text> text)
+    {
+
+        Val<string> newArc = "walkAround";
+
+        //return new LeafInvoke(
+        //   () => this.Character.startConversation(character, stealF, true),
+        //   () => this.Character.startConversation(character, stealF, false));
+        return new Sequence(
+            (new LeafInvoke(
+                () => this.Character.changeArcName(newArc, director))),
+            
+              //character has been found so now, walk up to his back
+              //new LeafInvoke(
+              //    () => this.Character.NavGoTo(stealChar.transform.position - stealChar.transform.forward),
+              //    () => this.Character.NavStop()
+              //),
+              // new LeafInvoke(
+              //   () => this.Character.startConversation(character, stealChar, true),
+              //    () => this.Character.startConversation(character, stealChar, false)),
+              //now reach down in pocket
+              //Node_StartInteraction(FullBodyBipedEffector.RightHand,(InteractionObject)(stealChar.transform.Find("Inter_StealWallet").GetComponent<InteractionObject>()))
+
+              //just use hand animation
+              /*new LeafInvoke(
+                 () => this.Character.HandAnimation("REACHRIGHT", true),
+                 () => this.Character.HandAnimation("REACHRIGHT", false))*/
+
+
+              //InteractionObject
+              new LeafInvoke(
+                () => this.Character.StartInteraction(FullBodyBipedEffector.RightHand, stealFrom.Value.transform.GetChild(4).GetChild(3).GetComponent<InteractionObject>()),
+                () => this.Character.StopInteraction(FullBodyBipedEffector.RightHand)),
+              new LeafWait(700),
+              new LeafInvoke(
+                () => this.Character.StopInteraction(FullBodyBipedEffector.RightHand)),
+              new LeafInvoke(
+                () => this.Character.increaseMoney(text)),
+              (new LeafInvoke(
+                () => stealFrom.Value.transform.GetComponent<CharacterMecanim>().HandAnimation("SURPRISED", true)
+                )),
+                new LeafWait(5000),
+                (new LeafInvoke(
+                () => stealFrom.Value.transform.GetComponent<CharacterMecanim>().HandAnimation("SURPRISED", false)
+                ))//,
+                  //(new LeafInvoke(
+                  //() => this.Character.changeArcName(newArc, director)))
+
+       );
+    }
+
+    public Node ST_buyFromVender(Val<GameObject> character, Val<GameObject> salesman, Val<GameObject> director, Val<string> newArc)
+    {
+        //first he faces vendor
+        Func<RunStatus> turn =
+            () => this.Character.NavTurn(salesman.Value.transform.position);
+
+        Func<RunStatus> stopTurning =
+            () => this.Character.NavOrientBehavior(
+                OrientationBehavior.LookForward);
+
+       // return
+        //    new Sequence(
+         //       new LeafInvoke(turn, stopTurning));
+
+
+        return new Sequence(
+
+
+            //         new LeafInvoke(
+            //)
+            // ,        
+            //new LeafInvoke(turn, stopTurning),
+            Node_HeadLook(salesman.Value.transform.position)
+            ,
+
+            (new LeafInvoke(
+                () => this.Character.turnMovement(false,director))),
+
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("CALLOVER", true))),
+            new LeafWait(950),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("CALLOVER", false))),
+            (new LeafInvoke(
+                () => this.Character.startConversation(character, salesman, true),
+                () => this.Character.startConversation(character, salesman, false)
+            )),
+            new LeafWait(100),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("THINK", true)
+            )),
+            new LeafWait(3000),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("THINK", false)
+            )),
+            new LeafWait(900),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("POINTING", true)
+            )),
+            new LeafWait(5000),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("POINTING", false)
+            )),
+            (new LeafInvoke(
+                () => salesman.Value.GetComponent<CharacterMecanim>().FaceAnimation("HEADNOD", true)
+            )),
+            new LeafWait(3000),
+            (new LeafInvoke(
+                () => salesman.Value.GetComponent<CharacterMecanim>().FaceAnimation("HEADNOD", false)
+            )),
+            (new LeafInvoke(
+                () => Character.BodyAnimation("PICKUPRIGHT", true)
+            )),
+             new LeafWait(3000),
+             (new LeafInvoke(
+                () => Character.BodyAnimation("PICKUPRIGHT", false)
+            )),
+            (new LeafInvoke(
+                () => salesman.Value.GetComponent<CharacterMecanim>().HandAnimation("WAVE", true)
+            )),
+
+            new LeafWait(7000),
+            (new LeafInvoke(
+                () => salesman.Value.GetComponent<CharacterMecanim>().HandAnimation("WAVE", false)
+            )),
+            (new LeafInvoke(
+                () => this.Character.turnMovement(true, director))),
+            (new LeafInvoke(
+                () => this.Character.changeArcName(newArc,director))),
+             (new LeafInvoke(
+                () => this.Character.endConversation(true)))
+
+
+
+
+
+       );
+    }
+
+
+    public Node winGameMessages(Val<Text> t, Val<Text> dt)
+    {  
+        return new Sequence(
+            new LeafInvoke(
+                () => this.Character.winGame(t, dt)
+            )
+     
+       );
+    }
+
+    public Node changeArcName(Val<string> t, Val<GameObject> dir)
+    {
+        return (new LeafInvoke(
+                () => this.Character.changeArcName(t, dir)));
+    }
+
+    public Node changeCam(Val<GameObject>character)
+    {
+        return (new LeafInvoke(
+                () => this.Character.changeCam(character)));
+    }
+
+    //Behavior 3 chase
+    public Node chase(Val<GameObject> chased, Val<Vector3> chasedPosition, Val<float> radius, Val<GameObject> chaser1, Val<GameObject> chaser2, Val<float> factorSpeed, Val<GameObject> director )
+    {
+        return new Sequence(
+             new LeafInvoke(
+                      () => Character.convertSpeeds(chased, chaser1, chaser2, factorSpeed)
+             ),
+            (new LeafInvoke(
+                () => this.Character.turnMovement(false, director))),
+            new SelectorParallel(
+                chaser1.Value.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(chasedPosition, radius),
+                chaser2.Value.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(chasedPosition, radius),
+                /*new LeafInvoke(
+                    () => chaser1.Value.GetComponent<CharacterMecanim>().NavGoTo(chasePoint),
+                    () => chaser1.Value.GetComponent<CharacterMecanim>().NavStop()),
+                new LeafInvoke(
+                    () => chaser2.Value.GetComponent<CharacterMecanim>().NavGoTo(chasePoint),
+                    () => chaser2.Value.GetComponent<CharacterMecanim>().NavStop()),*/
+                new LeafInvoke(
+                    () => chased.Value.GetComponent<CharacterMecanim>().NavGoTo(chased.Value.transform.position + 2 * (chaser1.Value.transform.forward + chaser2.Value.transform.forward)),
+                    () => chased.Value.GetComponent<CharacterMecanim>().NavStop())
+
+            ),
+            new LeafInvoke(
+                () => Character.HandAnimation("CRY", true)),
+            chaser1.Value.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(chasedPosition, radius),
+            chaser2.Value.GetComponent<BehaviorMecanim>().Node_GoToUpToRadius(chasedPosition, radius)
+                    
+
+        //(new Selector
+        //     (this.ST_Approach(kingFrontPosition, knight))),
+        //if we see robber, return success
+        //     (new Selector
+        //    (this.ST_Approach(knight.transform, robber)))
+        //when king stops thinking, return success
+        //10000//random...
+        );
     }
 
 }
