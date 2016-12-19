@@ -370,11 +370,87 @@ public class BehaviorMecanim : MonoBehaviour
             () => this.Character.destroy(character));
     }
 
-   // public void setStealChar(GameObject c)
-   // {
-   //    stealChar=c;
-   // }
+    // public void setStealChar(GameObject c)
+    // {
+    //    stealChar=c;
+    // }
 
+
+    public Node ST_talkToNpc(Val<GameObject> character, Val<GameObject> director, Val<GameObject[]> questCharacters)
+    {
+
+        Val<string> newArc1 = "quest1";
+        Val<string> newArc2 = "quest2";
+
+        return new Sequence(
+            //get rid of talking
+            (new LeafInvoke(
+               () => this.Character.getridOfTalking(character, director))),
+            new LeafInvoke(
+                () => this.Character.findFrontCharacter(character, director)
+            ),
+            //depending on character do a certain quest
+            new Selector(
+                new Sequence(
+                    new LeafInvoke(
+                        () => this.Character.checkRightChar(character, director, stealChar, questCharacters, 0)
+                    ),
+                    (new LeafInvoke(
+                        () => this.Character.changeArcName(newArc1, director)))
+
+                ),
+                new Sequence(
+                    new LeafInvoke(
+                        () => this.Character.checkRightChar(character, director, stealChar, questCharacters, 1)
+                    ),
+                    (new LeafInvoke(
+                        () => this.Character.changeArcName(newArc2, director)))
+
+                )
+
+            )
+            
+
+       );
+    }
+
+
+    public Node ST_pickRandomLetter(Val<GameObject> director, Val<string[]> letters, Val<Text> assignedText, Val<Text> madeText)
+    {
+
+        
+        return new Sequence(
+            //1st pick a random letter and update dir
+            (new LeafInvoke(
+                () => this.Character.updateAndPickLetter( director, letters, assignedText, madeText)))
+            
+       );
+    }
+
+    public Node initializeLetters(Val<GameObject> director, Val<string[]> letters, Val<Text> assignedText, Val<Text> madeText)
+    {
+
+
+        return new Sequence(
+            //1st pick a random letter and update dir
+            (new LeafInvoke(
+                () => this.Character.initializeLetters(director, letters, assignedText, madeText)))
+
+       );
+    }
+
+
+    public Node updatePickedLetter(Val<GameObject> director, Val<string[]> letters, Val<Text> assignedText, Val<Text> madeText)
+    {
+
+
+        return new Sequence(
+            //1st pick a random letter and update dir
+            (new LeafInvoke(
+                () => this.Character.updatePickedLetter(director, letters, assignedText, madeText)))
+
+       );
+    }
 
 
     public Node ST_stealFromPlayerFront(Val<GameObject> character, Val<GameObject> director, Val<Text> text)
@@ -571,6 +647,94 @@ public class BehaviorMecanim : MonoBehaviour
     }
 
 
+    public Node ST_buyFromVenderNoArc(Val<GameObject> character, Val<GameObject> salesman, Val<GameObject> director)
+    {
+        //first he faces vendor
+        Func<RunStatus> turn =
+            () => this.Character.NavTurn(salesman.Value.transform.position);
+
+        Func<RunStatus> stopTurning =
+            () => this.Character.NavOrientBehavior(
+                OrientationBehavior.LookForward);
+
+        // return
+        //    new Sequence(
+        //       new LeafInvoke(turn, stopTurning));
+
+
+        return new Sequence(
+
+
+            //         new LeafInvoke(
+            //)
+            // ,        
+            //new LeafInvoke(turn, stopTurning),
+            Node_HeadLook(salesman.Value.transform.position)
+            ,
+
+            (new LeafInvoke(
+                () => this.Character.turnMovement(false, director))),
+
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("CALLOVER", true))),
+            new LeafWait(950),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("CALLOVER", false))),
+            (new LeafInvoke(
+                () => this.Character.startConversation(character, salesman, true),
+                () => this.Character.startConversation(character, salesman, false)
+            )),
+            new LeafWait(100),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("THINK", true)
+            )),
+            new LeafWait(3000),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("THINK", false)
+            )),
+            new LeafWait(900),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("POINTING", true)
+            )),
+            new LeafWait(5000),
+            (new LeafInvoke(
+                () => this.Character.HandAnimation("POINTING", false)
+            )),
+            (new LeafInvoke(
+                () => salesman.Value.GetComponent<CharacterMecanim>().FaceAnimation("HEADNOD", true)
+            )),
+            new LeafWait(3000),
+            (new LeafInvoke(
+                () => salesman.Value.GetComponent<CharacterMecanim>().FaceAnimation("HEADNOD", false)
+            )),
+            (new LeafInvoke(
+                () => Character.BodyAnimation("PICKUPRIGHT", true)
+            )),
+             new LeafWait(3000),
+             (new LeafInvoke(
+                () => Character.BodyAnimation("PICKUPRIGHT", false)
+            )),
+            (new LeafInvoke(
+                () => salesman.Value.GetComponent<CharacterMecanim>().HandAnimation("WAVE", true)
+            )),
+
+            new LeafWait(7000),
+            (new LeafInvoke(
+                () => salesman.Value.GetComponent<CharacterMecanim>().HandAnimation("WAVE", false)
+            )),
+            (new LeafInvoke(
+                () => this.Character.turnMovement(true, director))),
+             (new LeafInvoke(
+                () => this.Character.endConversation(true)))
+
+
+
+
+
+       );
+    }
+
+
     public Node winGameMessages(Val<Text> t, Val<Text> dt)
     {  
         return new Sequence(
@@ -592,6 +756,13 @@ public class BehaviorMecanim : MonoBehaviour
         return (new LeafInvoke(
                 () => this.Character.changeCam(character)));
     }
+
+    public Node Node_endQuest(Val<GameObject> director, Val<GameObject> quest1Visibles, Val<GameObject> quest2Visibles)
+    {
+        return (new LeafInvoke(
+                () => this.Character.endQuest(director, quest1Visibles, quest2Visibles)));
+    }
+
 
     //Behavior 3 chase
     public Node chase(Val<GameObject> chased, Val<Vector3> chasedPosition, Val<float> radius, Val<GameObject> chaser1, Val<GameObject> chaser2, Val<float> factorSpeed, Val<GameObject> director )

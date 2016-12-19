@@ -496,6 +496,7 @@ public class BehaviorCoordinatorb4 : MonoBehaviour
         Val<string> newCaughtArc = Val.V(() => "loseGame");
         Val<float> d = Val.V(() => 5f);
         Val<float> dForward = Val.V(() => 50f);
+        Val<GameObject> p = Val.V(() => policeman2);
         Val<GameObject> p1 = Val.V(() => policeman);
         bool trueValue=true;
         Val<object> isActive = Val.V(() => (object)trueValue);
@@ -636,25 +637,22 @@ public class BehaviorCoordinatorb4 : MonoBehaviour
                 (this.ST_ApproachAndWait(wander6, person10))
             ))),
             //agent can steal
-            new DecoratorLoop(
-                new Selector(
-                    new Sequence(
+            (new DecoratorLoop
+                (new Selector(
+                    (new Sequence(
                         new LeafAssert(isStillCurrentArcSteal),
                         new DecoratorInvert(new LeafAssert(hasMaximumMoney)),
                         //(person1.GetComponent<BehaviorMecanim>().Node_BeginConversation(robber, person3, true)),
-                        (robber.GetComponent<BehaviorMecanim>().ST_stealFromPlayerFront(r, dir, t)),
+                        robber.GetComponent<BehaviorMecanim>().ST_stealFromPlayerFront(r, dir, t),
                         robber.GetComponent<BehaviorMecanim>().changeArcName(regArc, dir)
                         //now check if policeman sees
                         ,
-                        new Sequence(policeman.GetComponent<BehaviorMecanim>().Node_Sees(p1, r, isActive, d, dForward)
+                        new Selector(policeman.GetComponent<BehaviorMecanim>().Node_Sees(p1, r, isActive, d, dForward))
                         , 
                         policeman.GetComponent<BehaviorMecanim>().changeArcName(newCaughtArc,dir)
-                    )
-
-
-                    ),
+                   )),
                     new LeafAssert(alwaysReturnTrue)
-                )
+                ))
             ),
             //agent talks to vendor and buys something
             new DecoratorLoop(

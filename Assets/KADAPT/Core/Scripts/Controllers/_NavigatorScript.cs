@@ -35,6 +35,9 @@ public class _NavigatorScript : MonoBehaviour
             //TODO Resetting path here, otherwise e.g. stepback animation not working properly - CS 03.09.2014
             //Is there a better solution?
             agent.ResetPath();
+            if (locomotion == null) {
+                Initialize();
+            }
 			locomotion.Do(0, 0);
 		}
 		else
@@ -44,8 +47,11 @@ public class _NavigatorScript : MonoBehaviour
 			Vector3 velocity = Quaternion.Inverse(transform.rotation) * agent.desiredVelocity;
 			
 			float angle = Mathf.Atan2(velocity.x, velocity.z) * 180.0f / 3.14159f;
-			
-			locomotion.Do(speed, angle);
+            if (locomotion == null)
+            {
+                Initialize();
+            }
+            locomotion.Do(speed, angle);
 		}
 	}
 

@@ -72,12 +72,12 @@ public class CharacterMecanim : MonoBehaviour
     /// </summary>
     public virtual RunStatus NavTurn(Val<Vector3> target)
     {
-        Debug.Log("We are at:" + this.gameObject.transform.position);
-        Debug.Log("Want to turn to :" + target.Value);
+        //Debug.Log("We are at:" + this.gameObject.transform.position);
+        //Debug.Log("Want to turn to :" + target.Value);
         if (target.Value.y == 0)
         {
-            Debug.Log("our y value is 0. so we made the desired location:" + new Vector3(target.Value.x, 2, target.Value.z));
-            Debug.Log("We are at:" + this.gameObject.transform.position);
+            //Debug.Log("our y value is 0. so we made the desired location:" + new Vector3(target.Value.x, 2, target.Value.z));
+           // Debug.Log("We are at:" + this.gameObject.transform.position);
             this.Body.NavSetOrientationBehavior(OrientationBehavior.None);
             this.Body.NavSetDesiredOrientation(new Vector3(target.Value.x, 2, target.Value.z));
             if (this.Body.NavIsFacingDesired() == true)
@@ -364,6 +364,12 @@ public class CharacterMecanim : MonoBehaviour
         int conversationPart = (int)conversationP.Value;
         switch (conversationNumber)
         {
+            case -1:
+                if (conversationDefault(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
             case 0:
                 if(conversation0(conversationPart, conversationText.Value) == 0)
                 {
@@ -378,6 +384,84 @@ public class CharacterMecanim : MonoBehaviour
                 break;
             case 2:
                 if (conversation2(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 3:
+                if (conversation3(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 4:
+                if (conversation4(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 5:
+                if (conversation5(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 6:
+                if (conversation6(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 7:
+                if (conversation7(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 8:
+                if (conversation8(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 9:
+                if (conversation9(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 10:
+                if (conversation10(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 11:
+                if (conversation11(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 12:
+                if (conversation12(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 13:
+                if (conversation13(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 14:
+                if (conversation14(conversationPart, conversationText.Value) == 0)
+                {
+                    return RunStatus.Success;
+                }
+                break;
+            case 15:
+                if (conversation15(conversationPart, conversationText.Value) == 0)
                 {
                     return RunStatus.Success;
                 }
@@ -458,10 +542,129 @@ public class CharacterMecanim : MonoBehaviour
 
     }
 
+    public int conversation3(int conversationPart, Text conversationText)
+    {
+
+          conversationText.text = "There lived a magician whose name was Rasputin. He had just graduated from wizardry school and came back to his home city to help out others.";
+          return 0;
+    }
+
+    public int conversation4(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "One day he was walking around talking to some local merchants.";
+        return 0;
+    }
+    public int conversation5(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "Merchant: How do you do sir? \nRasputin: I am doing fine. Thank you. Any unfortunate events I can help out with?";
+        return 0;
+    }
+
+    public int conversation6(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "Merchant: Definitely. I hear that there are a couple of people in the village to the right of the castle that might need your help.";
+        return 0;
+    }
+
+    public int conversation7(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "And so the magician headed off to the village... where this story begins. Controls: WASD to move, Shift to run and T to talk to NPCs (guys in suits)";
+        return 0;
+    }
+
+    //chief. quest 2
+    public int conversation8(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "Rasputin: Do you need any help with anything? \nTown chief: Definitely. We have recently been ravaged by a drought and our crops are not growing.";
+        return 0;
+    }
+
+    public int conversation9(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "Town chief: Can you use your magic powers to have our crops grow again?";
+        return 0;
+    }
+
+    public int conversation10(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "Press the letter on the top of your screen. Press 80% of the letters correctly to successfully perform the magic ritual.";
+        return 0;
+    }
+
+    public int conversation11(int conversationPart, Text conversationText)
+    {
+        conversationText.text = "Congradulations. You magic has worked. The crops have grown and the villagers are happy with your help. You magic skills have now increased.";
+        return 0;
+    }
+
+    //blacksmith. quest 1
+    public int conversation12(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "Rasputin: Do you need any help with anything? \nBlacksmith: Yes please. My coals have vanished and I need them to light up my forge.";
+        return 0;
+    }
+
+    public int conversation13(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "Blacksmith: Can you use your magic powers to get my coals back?";
+        return 0;
+    }
+
+    //1more comes from conversation 10
+
+    public int conversation14(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "Congradulations. You magic has worked. The blacksmith got his coals back. The villagers are very happy with your help. Your magic skills have increased.";
+        return 0;
+    }
+
+    //end both quests
+    public int conversation15(int conversationPart, Text conversationText)
+    {
+        conversationText.text = "Congradulations on completing both quests. The demo ends here. Thank you.";
+        return 0;
+    }
+
+
+    //default
+    public int conversationDefault(int conversationPart, Text conversationText)
+    {
+
+        conversationText.text = "";
+        return 0;
+    }
+
+
 
     public virtual RunStatus endConversation(Val<bool> isActive)
     {
         this.Body.endConverse(isActive.Value);
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus endQuest(Val<GameObject> director, Val<GameObject> quest1Visibles, Val<GameObject> quest2Visibles)
+    {
+        //turn on movement
+        director.Value.GetComponent<BehaviorCoordinatorb5>().movementOn = true;
+        //make whatever you need visible
+        if (director.Value.GetComponent<BehaviorCoordinatorb5>().quest1Done)
+        {
+            quest1Visibles.Value.SetActive( true);
+        }
+        if (director.Value.GetComponent<BehaviorCoordinatorb5>().quest2Done)
+        {
+            quest2Visibles.Value.SetActive(true);
+        }
         return RunStatus.Success;
     }
 
@@ -607,6 +810,106 @@ public class CharacterMecanim : MonoBehaviour
 
     }
 
+
+    public virtual RunStatus getridOfTalking(Val<GameObject> character, Val<GameObject> director)
+    {
+        director.Value.GetComponent<BehaviorCoordinatorb5>().talking = false;
+        return RunStatus.Success;
+
+
+
+    }
+    public virtual RunStatus initializeLetters(Val<GameObject> director, Val<string[]> letters, Val<Text> assignedText, Val<Text> madeText)
+    {
+        director.Value.GetComponent<BehaviorCoordinatorb5>().keyRight=0;
+        director.Value.GetComponent<BehaviorCoordinatorb5>().numKeys = 0;
+
+        assignedText.Value.text = "";
+        madeText.Value.text = "";
+
+
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus updateAndPickLetter(Val<GameObject> director, Val<string[]> letters, Val<Text> assignedText, Val<Text> madeText)
+    {
+        director.Value.GetComponent<BehaviorCoordinatorb5>().numKeys ++;
+        int randomLetter=(int)UnityEngine.Random.Range(0, letters.Value.Length);
+        string letter= letters.Value[randomLetter];
+        director.Value.GetComponent<BehaviorCoordinatorb5>().assignLetter = letter;
+        director.Value.GetComponent<BehaviorCoordinatorb5>().makeLetter = "";
+        director.Value.GetComponent<BehaviorCoordinatorb5>().movementOn = false;
+        Debug.Log("letter: " +letter);
+
+        assignedText.Value.text = letter;
+        madeText.Value.text = "";
+
+
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus updatePickedLetter(Val<GameObject> director, Val<string[]> letters, Val<Text> assignedText, Val<Text> madeText)
+    {
+        //so we got leter. now we check if letter is same as assignedletter
+        string assignedLetter = director.Value.GetComponent<BehaviorCoordinatorb5>().assignLetter;
+        string makeLetter = director.Value.GetComponent<BehaviorCoordinatorb5>().makeLetter;
+
+        Debug.Log("assignedLetter:"+ assignedLetter);
+        Debug.Log("makeLetter:" + makeLetter);
+
+        madeText.Value.text = makeLetter;
+
+        //if it is, make it gree color and display
+        if (assignedLetter == makeLetter)
+        {
+            director.Value.GetComponent<BehaviorCoordinatorb5>().keyRight++;
+            madeText.Value.color = new Color(0,255,0);
+
+        }
+
+
+        //ifit is not, make it red color and display
+        else
+        {
+            //director.Value.GetComponent<BehaviorCoordinatorb5>().keyRight.Add(false);
+            madeText.Value.color = new Color(255, 0, 0);
+        }
+
+
+        //make makeLetter=""
+        director.Value.GetComponent<BehaviorCoordinatorb5>().makeLetter = "";
+
+        
+
+       
+
+
+        return RunStatus.Success;
+    }
+
+    public virtual RunStatus checkRightChar(Val<GameObject> character, Val<GameObject> director , Val<GameObject> stealChar, Val<GameObject []>questCharacters, int n)
+    {
+        Debug.Log("StealCharName is: " + stealChar.Value.transform.parent.name + " while questCharacter ["+n+"]: "+ questCharacters.Value[n].name);
+
+        //return success if stealChar=questCharacters[n]
+        if (stealChar.Value.transform.parent.name == questCharacters.Value[n].name)
+        {
+            if (n == 0 && director.Value.GetComponent<BehaviorCoordinatorb5>().quest1Done != true)
+            {
+                director.Value.GetComponent<BehaviorCoordinatorb5>().quest1Done = true;
+                return RunStatus.Success;
+
+            }else if (n == 1 && director.Value.GetComponent<BehaviorCoordinatorb5>().quest1Done != true)
+            {
+                director.Value.GetComponent<BehaviorCoordinatorb5>().quest2Done = true;
+                return RunStatus.Success;
+
+            }
+
+        }
+        return RunStatus.Failure;
+    }
+
     public virtual RunStatus increaseMoney(Val<Text> text)
     {
         string moneyString = text.Value.text;
@@ -622,13 +925,13 @@ public class CharacterMecanim : MonoBehaviour
         {
             director.Value.GetComponent<BehaviorCoordinatorb4>().movementOn = true;
             director.Value.GetComponent<BehaviorCoordinatorb4Phase1>().movementOn = true;
-            //Debug.Log("movement is ON");
+            director.Value.GetComponent<BehaviorCoordinatorb5>().movementOn = true;
         }
         else
         {
             director.Value.GetComponent<BehaviorCoordinatorb4>().movementOn = false;
             director.Value.GetComponent<BehaviorCoordinatorb4Phase1>().movementOn = false;
-            // Debug.Log("Movement is OFF");
+            director.Value.GetComponent<BehaviorCoordinatorb5>().movementOn = true;
         }
         return RunStatus.Success;
 
@@ -636,10 +939,10 @@ public class CharacterMecanim : MonoBehaviour
 
     public virtual RunStatus changeArcName(Val<string> newArc, Val<GameObject> director)
     {
-        
-            director.Value.GetComponent<BehaviorCoordinatorb4>().currentArc = newArc.Value;
+        //Debug.Log("We change arcname to: "+newArc.Value);
+        director.Value.GetComponent<BehaviorCoordinatorb4>().currentArc = newArc.Value;
         director.Value.GetComponent<BehaviorCoordinatorb4Phase1>().currentArc = newArc.Value;
-
+        director.Value.GetComponent<BehaviorCoordinatorb5>().currentArc = newArc.Value;
         return RunStatus.Success;
     }
 
